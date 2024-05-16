@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Page</title>
+</head>
+<body>
+    <h1>Upload File or Text</h1>
+    <form id="uploadForm">
+        <input type="file" name="file" id="fileInput"><br>
+        <textarea name="text" id="textInput" rows="5" cols="50" placeholder="Enter text"></textarea><br>
+        <button type="submit">Upload</button>
+    </form>
+
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Upload failed');
+                }
+                return response.text();
+            })
+            .then(data => {
+                console.log(data);
+                alert('Upload successful');
+            })
+            .catch(error => {
+                console.error('Error uploading file/text:', error);
+                alert('Upload failed');
+            });
+        });
+    </script>
+     <script>
+        $('#fetchData').click(function() {
+            var projectName = 'c:\Users\pavitra\eclipse-workspace\JAVAPROJECT'; // Replace 'YourProjectName' with your actual project name
+            var className = 'c:\Users\pavitra\eclipse-workspace\JAVAPROJECT\src\UploadController.java'; // Replace 'YourClassName' with your actual class name
+            var backendEndpoint = '/' + projectName + '/' + className + '/backendEndpoint';
+
+            $.get(backendEndpoint, function(data) {
+                alert('Data received from backend: ' + data);
+            });
+        });
+    </script>
+    </body>
+</html>

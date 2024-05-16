@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Interface</title>
+</head>
+<body>
+    <h1>Chat Interface</h1>
+    <div id="chatArea"></div>
+    <input type="text" id="userInput" placeholder="Type your message...">
+    <button onclick="sendMessage()">Send</button>
+
+    <script>
+        function sendMessage() {
+            const userInput = document.getElementById('userInput').value;
+            fetch('/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(userInput)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Chat failed');
+                }
+                return response.text();
+            })
+            .then(data => {
+                console.log(data);
+                displayMessage(data);
+            })
+            .catch(error => {
+                console.error('Error sending message:', error);
+                displayMessage('Chat failed');
+            });
+        }
+
+        function displayMessage(message) {
+            const chatArea = document.getElementById('chatArea');
+            const messageDiv = document.createElement('div');
+            messageDiv.textContent = message;
+            chatArea.appendChild(messageDiv);
+        }
+    </script>
+    <script>
+        $('#fetchData').click(function() {
+            var projectName = 'Yc:\Users\pavitra\eclipse-workspace\JAVAPROJECT'; // Replace 'YourProjectName' with your actual project name
+            var className = 'c:\Users\pavitra\eclipse-workspace\JAVAPROJECT\src\ChatController.java'; // Replace 'YourClassName' with your actual class name
+            var backendEndpoint = '/' + projectName + '/' + className + '/backendEndpoint';
+
+            $.get(backendEndpoint, function(data) {
+                alert('Data received from backend: ' + data);
+            });
+        });
+    </script>
+
+</body>
+</html>
